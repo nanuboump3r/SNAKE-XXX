@@ -4,7 +4,7 @@ import random
 
 pygame.init()
 pygame.mixer.init()  
-screen_width, screen_height = 1080, 720
+screen_width, screen_height = 1280, 920
 screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 35)
