@@ -41,18 +41,22 @@ bonus_timer = 0
 dx, dy = 0, 0
 
 
-eat_sound = pygame.mixer.Sound(r"snakey\comer.wav")
-bonus_sound = pygame.mixer.Sound(r"snakey\bonificacion.wav")
-pygame.mixer.music.load(r"snakey\background.mp3") 
+eat_sound = pygame.mixer.Sound(r"comer.wav")
+bonus_sound = pygame.mixer.Sound(r"bonificacion.wav")
+pygame.mixer.music.load(r"background.mp3") 
 pygame.mixer.music.play(-1)  
 
+pygame.mixer.music.set_volume(0.3)
 
 def display_score_level(score, level, exp):
-    score_text = font.render(f"Score: {score}  Level: {level}  Exp: {exp}", True, white)
-    screen.blit(score_text, [10, 10])
+    score_text = font.render(f"Score: {score}", True, white)
+    screen.blit(score_text, [10, 10])  # Posición del puntaje
+    draw_progress_bar(exp, level)  # Llamada a la barra de progreso
+
+
 def draw_progress_bar(exp, level):
     # Dimensiones de la barra de progreso
-    bar_width = 200
+    bar_width = 100
     bar_height = 20
     bar_x = (screen_width - bar_width) // 2
     bar_y = 30
@@ -69,14 +73,9 @@ def draw_progress_bar(exp, level):
     level_text = font.render(f"Nivel: {level}", True, white)
     screen.blit(level_text, [bar_x, bar_y - 25])  # Posición encima de la barra
 
-def display_score_level(score, level, exp):
-    score_text = font.render(f"Score: {score}", True, white)
-    screen.blit(score_text, [10, 10])  # Posición del puntaje
-    draw_progress_bar(exp, level)  # Llamada a la barra de progreso
-
 def level_up():
     global level, snake_speed, exp
-    if exp >= 10:
+    if exp >= level * 10: # incrementa el nivel cada 10 exp
         level += 1
         snake_speed += 1
         exp = 0
@@ -89,7 +88,7 @@ def draw_snake(snake_block, snake_list):
 
 def activate_bonus():
     global bonus_food_x, bonus_food_y, bonus_active, bonus_timer
-    if not bonus_active and random.randint(1, 20) == 1: 
+    if not bonus_active and random.randint(1, 50) == 1: 
         bonus_food_x = round(random.randrange(0, screen_width - snake_block) / 10.0) * 10.0
         bonus_food_y = round(random.randrange(0, screen_height - snake_block) / 10.0) * 10.0
         bonus_active = True
@@ -143,7 +142,7 @@ def game_loop():
 
  
         if bonus_active and snake_x == bonus_food_x and snake_y == bonus_food_y:
-            score += 50  
+            score += 30  
             snake_length += 3  
             exp += 5  
             bonus_sound.play()  
